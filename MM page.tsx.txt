@@ -1,0 +1,87 @@
+import { useState } from 'react'
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { GlobeIcon, SearchIcon, ShoppingCartIcon } from 'lucide-react'
+
+const locales = {
+  en: {
+    title: "eSIM MM",
+    subtitle: "Travel the world with eSIM",
+    search: "Search destinations",
+    popular: "Popular destinations",
+    cart: "Cart",
+  },
+  my: {
+    title: "eSIM MM",
+    subtitle: "eSIM ဖြင့် ကမ္ဘာလှည့်ပါ",
+    search: "ခရီးစဉ်များကို ရှာဖွေရန်",
+    popular: "ရေပန်းစားသော ခရီးစဉ်များ",
+    cart: "စျေးခြင်း",
+  }
+}
+
+const destinations = [
+  { name: "Thailand", flag: "🇹🇭", price: 15000 },
+  { name: "Singapore", flag: "🇸🇬", price: 20000 },
+  { name: "Japan", flag: "🇯🇵", price: 25000 },
+  { name: "USA", flag: "🇺🇸", price: 30000 },
+]
+
+export default function Component() {
+  const [lang, setLang] = useState('en')
+  const t = locales[lang]
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <header className="flex items-center justify-between p-4 bg-primary text-primary-foreground">
+        <h1 className="text-2xl font-bold">{t.title}</h1>
+        <nav className="flex items-center space-x-4">
+          <Button variant="ghost" size="sm" onClick={() => setLang(lang === 'en' ? 'my' : 'en')}>
+            <GlobeIcon className="mr-2 h-4 w-4" />
+            {lang === 'en' ? 'မြန်မာ' : 'English'}
+          </Button>
+          <Button variant="ghost" size="sm">
+            <ShoppingCartIcon className="mr-2 h-4 w-4" />
+            {t.cart}
+          </Button>
+        </nav>
+      </header>
+
+      <main className="flex-grow">
+        <section className="py-12 px-4 text-center bg-secondary">
+          <h2 className="text-3xl font-bold mb-4">{t.subtitle}</h2>
+          <div className="max-w-md mx-auto flex">
+            <Input type="text" placeholder={t.search} className="rounded-r-none" />
+            <Button type="submit" className="rounded-l-none">
+              <SearchIcon className="h-4 w-4" />
+            </Button>
+          </div>
+        </section>
+
+        <section className="py-12 px-4">
+          <h3 className="text-2xl font-semibold mb-6">{t.popular}</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {destinations.map((dest) => (
+              <Card key={dest.name}>
+                <CardHeader>
+                  <CardTitle>{dest.flag} {dest.name}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-2xl font-bold">{dest.price.toLocaleString()} MMK</p>
+                </CardContent>
+                <CardFooter>
+                  <Button className="w-full">Add to Cart</Button>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        </section>
+      </main>
+
+      <footer className="bg-muted py-6 px-4 text-center">
+        <p>&copy; 2024 eSIM MM. All rights reserved.</p>
+      </footer>
+    </div>
+  )
+}
